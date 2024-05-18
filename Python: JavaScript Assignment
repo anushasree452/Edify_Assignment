@@ -1,0 +1,221 @@
+1. Implement a function to check if a given string is a palindrome.
+def is_palindrome(s):
+    cleaned = ''.join(char.lower() for char in s if char.isalnum())
+    return cleaned == cleaned[::-1]
+print(is_palindrome("A man, a plan, a canal: Panama"))  # Output: True
+print(is_palindrome("race a car"))                      # Output: False
+
+
+2. Create a simple to-do list application using HTML, CSS, and JavaScript. Users should be able to add tasks, mark them as complete, and delete them.
+
+//HTML:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>To-Do List</h1>
+        <input type="text" id="new-task" placeholder="Add a new task">
+        <button onclick="addTask()">Add</button>
+        <ul id="task-list"></ul>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+//CSS:
+body {
+    font-family: Arial, sans-serif;
+}
+
+#app {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+#task-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+
+//JAVA SCRIPT:
+function addTask() {
+    const taskInput = document.getElementById('new-task');
+    const taskText = taskInput.value.trim();
+
+    if (taskText) {
+        const taskList = document.getElementById('task-list');
+        const li = document.createElement('li');
+        li.className = 'task';
+        li.innerHTML = `
+            <span onclick="toggleComplete(this)">${taskText}</span>
+            <button onclick="deleteTask(this)">Delete</button>
+        `;
+        taskList.appendChild(li);
+        taskInput.value = '';
+    }
+}
+
+function toggleComplete(task) {
+    task.classList.toggle('completed');
+}
+
+function deleteTask(button) {
+    const li = button.parentElement;
+    li.remove();
+}
+
+
+3. Write a function that takes an array of integers and returns a new array with only the unique values.
+def unique_values(arr):
+    return list(set(arr))
+print(unique_values([1, 2, 2, 3, 4, 4, 5]))  # Output: [1, 2, 3, 4, 5]
+
+
+4. Implement a recursive function to calculate the factorial of a number.
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
+print(factorial(5))  # Output: 120
+
+
+5. Create a dynamic form validation library in JavaScript that can handle various types of inputs (text, email, password, etc.) and validation rules.
+//HTML:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form id="myForm">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" data-validation="email">
+        <span class="error-message"></span><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" data-validation="required">
+        <span class="error-message"></span><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    <script src="validation.js"></script>
+</body>
+</html>
+
+//CSS
+.error-message {
+    color: red;
+    font-size: 0.8em;
+}
+
+//JAVA SCRIPT
+document.getElementById('myForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const inputs = form.querySelectorAll('[data-validation]');
+    let isValid = true;
+
+    inputs.forEach(input => {
+        const validationType = input.dataset.validation;
+        const errorMessage = input.nextElementSibling;
+        if (!validateInput(input.value, validationType)) {
+            isValid = false;
+            errorMessage.textContent = `Invalid ${validationType}`;
+        } else {
+            errorMessage.textContent = '';
+        }
+    });
+
+    if (isValid) {
+        form.submit();
+    }
+});
+
+function validateInput(value, validationType) {
+    switch (validationType) {
+        case 'email':
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        case 'required':
+            return value.trim() !== '';
+        default:
+            return true;
+    }
+}
+
+
+6. Build a small React or Vue application that fetches data from an API and displays it in a user-friendly way.
+
+//App.js:
+import React, { useState, useEffect } from 'react';
+
+function App() {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(response => response.json())
+            .then(data => {
+                setData(data);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div>
+            <h1>Posts</h1>
+            <ul>
+                {data.map(post => (
+                    <li key={post.id}>
+                        <h2>{post.title}</h2>
+                        <p>{post.body}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+
+//INDEX.JS:
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+);
+
+
