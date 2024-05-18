@@ -1,0 +1,79 @@
+1.  Implement a recursive function to calculate the factorial of a number.
+
+function factorial(n) {
+    if (n === 0) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+console.log(factorial(5)); // Output: 120
+
+2. Build a RESTful API using Flask or Django that allows users to perform CRUD operations on a resource (e.g., a list of books, todos, etc.).
+
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# In-memory database of books
+books = []
+
+@app.route('/books', methods=['GET'])
+def get_books():
+    return jsonify(books), 200
+
+@app.route('/books', methods=['POST'])
+def add_book():
+    new_book = request.json
+    books.append(new_book)
+    return jsonify(new_book), 201
+
+@app.route('/books/<int:book_id>', methods=['GET'])
+def get_book(book_id):
+    book = next((book for book in books if book['id'] == book_id), None)
+    if book is None:
+        return jsonify({'error': 'Book not found'}), 404
+    return jsonify(book), 200
+
+@app.route('/books/<int:book_id>', methods=['PUT'])
+def update_book(book_id):
+    updated_data = request.json
+    book = next((book for book in books if book['id'] == book_id), None)
+    if book is None:
+        return jsonify({'error': 'Book not found'}), 404
+    book.update(updated_data)
+    return jsonify(book), 200
+
+@app.route('/books/<int:book_id>', methods=['DELETE'])
+def delete_book(book_id):
+    global books
+    books = [book for book in books if book['id'] != book_id]
+    return '', 204
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+3.  Create a web scraping tool using BeautifulSoup or Scrapy to extract data from a website and store it in a structured format (e.g., CSV, JSON, database).
+
+import requests
+from bs4 import BeautifulSoup
+import csv
+
+url = 'https://example.com'
+
+response = requests.get(url)
+
+soup = BeautifulSoup(response.content, 'html.parser')
+
+data = []
+for heading in soup.find_all('h2'):
+    data.append({'heading': heading.get_text()})
+csv_file = 'data.csv'
+with open(csv_file, 'w', newline='', encoding='utf-8') as file:
+    writer = csv.DictWriter(file, fieldnames=['heading'])
+    writer.writeheader()
+    writer.writerows(data)
+
+print(f'Data has been saved to {csv_file}')
+
